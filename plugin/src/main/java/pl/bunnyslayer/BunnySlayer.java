@@ -7,6 +7,7 @@ import pl.bunnyslayer.arena.ArenasManager;
 import pl.bunnyslayer.commands.CommandHelper;
 import pl.bunnyslayer.commands.Commands;
 import pl.bunnyslayer.data.DataHandler;
+import pl.bunnyslayer.data.MessagesManager;
 import pl.bunnyslayer.events.Events;
 import pl.bunnyslayer.gui.GUIManager;
 
@@ -17,6 +18,7 @@ public final class BunnySlayer extends JavaPlugin {
     private ArenasManager arenasManager;
     private CommandHelper commandHelper;
     private Commands commands;
+    private MessagesManager messagesManager;
     private DataHandler dataHandler;
     private Events events;
     private GUIManager guiManager;
@@ -27,6 +29,7 @@ public final class BunnySlayer extends JavaPlugin {
         this.arenasManager = new ArenasManager();
         this.commandHelper = new CommandHelper();
         this.commands = new Commands();
+        this.messagesManager = new MessagesManager();
         this.dataHandler = new DataHandler();
         this.events = new Events();
         this.guiManager = new GUIManager();
@@ -36,6 +39,7 @@ public final class BunnySlayer extends JavaPlugin {
             command.setTabCompleter(commandHelper);
         }
         getServer().getPluginManager().registerEvents(events, this);
+        dataHandler.loadAll();
         getLogger().info("Enabled!");
     }
 
