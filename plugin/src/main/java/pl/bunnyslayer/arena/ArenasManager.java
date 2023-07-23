@@ -2,6 +2,7 @@ package pl.bunnyslayer.arena;
 
 import lombok.Getter;
 import pl.bunnyslayer.BunnySlayer;
+import pl.bunnyslayer.util.DateManager;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -12,6 +13,19 @@ public class ArenasManager {
 
     private final BunnySlayer plugin = BunnySlayer.getInstance();
     private final List<Arena> arenas = new ArrayList<>();
+
+    public ArenasManager() {
+        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            String currentHour = DateManager.getHour() + ":" + DateManager.getMinute();
+            for(Arena arena : arenas) {
+                for(String hour : arena.getStartHours()) {
+                    if(hour.equals(currentHour)) {
+                        arena.setStarted(true);
+                    }
+                }
+            }
+        }, 0L, 20L * 60);
+    }
 
     @Nullable
     public Arena getByName(@Nullable String name) {
