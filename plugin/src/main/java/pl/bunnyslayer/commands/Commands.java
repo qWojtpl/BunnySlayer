@@ -12,7 +12,8 @@ public class Commands implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        return false;
+        plugin.getArenasManager().getByName("default").startArena();
+        return true;
     }
 
 }

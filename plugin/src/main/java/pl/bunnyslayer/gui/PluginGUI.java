@@ -18,7 +18,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PluginGUI {
+public abstract class PluginGUI {
 
     private final BunnySlayer plugin;
     private final ArenasManager arenasManager;

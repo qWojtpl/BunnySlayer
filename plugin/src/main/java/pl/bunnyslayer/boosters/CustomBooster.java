@@ -3,6 +3,7 @@ package pl.bunnyslayer.boosters;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -17,9 +18,12 @@ public class CustomBooster {
 
     @NotNull
     public LivingBooster spawnBooster(Location location) {
-        Item entity = (Item) location.getWorld().spawnEntity(location, EntityType.DROPPED_ITEM);
-        entity.setItemStack(item);
-        return new LivingBooster(entity);
+        Entity entity = location.getWorld().spawnEntity(location, EntityType.DROPPED_ITEM);
+        entity.setCustomName(name);
+        entity.setCustomNameVisible(true);
+        entity.setGravity(false);
+        ((Item) entity).setItemStack(item);
+        return new LivingBooster((Item) entity);
     }
 
 }

@@ -28,7 +28,7 @@ public class LivingBunny {
         if(experience < 0) {
             color = "§4- ";
         }
-        entity.setCustomName(color + experience);
+        entity.setCustomName(color + Math.abs(experience));
         if(bunnyType.equals(BunnyType.KILLER)) {
             ((Rabbit) entity).setRabbitType(Rabbit.Type.THE_KILLER_BUNNY);
         }

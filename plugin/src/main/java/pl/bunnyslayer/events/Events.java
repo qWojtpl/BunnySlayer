@@ -1,17 +1,22 @@
 package pl.bunnyslayer.events;
 
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Rabbit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.arena.Arena;
 import pl.bunnyslayer.arena.ArenasManager;
+import pl.bunnyslayer.boosters.LivingBooster;
+import pl.bunnyslayer.bunnies.LivingBunny;
 import pl.bunnyslayer.gui.GUIManager;
 import pl.bunnyslayer.gui.PluginGUI;
 
@@ -22,18 +27,25 @@ public class Events implements Listener {
     private final GUIManager guiManager = plugin.getGuiManager();
 
     @EventHandler
-    public void onKill(EntityDeathEvent event) {
+    public void onDamage(EntityDamageByEntityEvent event) {
+        if(!event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
+            return;
+        }
         if(!(event.getEntity() instanceof Rabbit)) {
             return;
         }
-        if(event.getEntity().getKiller() == null) {
+        if(!(event.getDamager() instanceof Player)) {
             return;
         }
         Arena arena = arenasManager.getByBunny(event.getEntity());
         if(arena == null) {
             return;
         }
-
+        event.setCancelled(true);
+        LivingBunny bunny = arena.getLivingBunny((LivingEntity) event.getEntity());
+        // Adding points logic
+        arena.getLivingBunnies().remove(bunny);
+        event.getEntity().remove();
     }
 
     @EventHandler
@@ -45,6 +57,11 @@ public class Events implements Listener {
         if(arena == null) {
             return;
         }
+        event.setCancelled(true);
+        LivingBooster booster = arena.getLivingBooster(event.getItem());
+        // Adding effect logic
+        arena.getLivingBoosters().remove(booster);
+        event.getItem().remove();
     }
 
     @EventHandler
