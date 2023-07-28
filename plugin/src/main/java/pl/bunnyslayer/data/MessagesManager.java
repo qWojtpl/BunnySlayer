@@ -1,6 +1,7 @@
 package pl.bunnyslayer.data;
 
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -13,6 +14,7 @@ public class MessagesManager {
         messages.put(key, value);
     }
 
+    @NotNull
     public String getMessage(String key) {
         return messages.getOrDefault(key, key);
     }

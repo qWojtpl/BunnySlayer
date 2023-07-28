@@ -20,8 +20,8 @@ public final class BunnySlayer extends JavaPlugin {
     private Commands commands;
     private MessagesManager messagesManager;
     private DataHandler dataHandler;
-    private Events events;
     private GUIManager guiManager;
+    private Events events;
 
     @Override
     public void onEnable() {
@@ -31,8 +31,8 @@ public final class BunnySlayer extends JavaPlugin {
         this.commands = new Commands();
         this.messagesManager = new MessagesManager();
         this.dataHandler = new DataHandler();
-        this.events = new Events();
         this.guiManager = new GUIManager();
+        this.events = new Events();
         PluginCommand command = getCommand("bunnyslayer");
         if(command != null) {
             command.setExecutor(commands);
@@ -45,6 +45,7 @@ public final class BunnySlayer extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        guiManager.closeAllInventories();
         getLogger().info("Disabled.");
     }
 

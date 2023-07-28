@@ -7,8 +7,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.arena.Arena;
 import pl.bunnyslayer.arena.ArenasManager;
-import pl.bunnyslayer.arena.BunnyType;
-import pl.bunnyslayer.arena.CustomBunny;
+import pl.bunnyslayer.bunnies.BunnyType;
+import pl.bunnyslayer.bunnies.CustomBunny;
 import pl.bunnyslayer.util.LocationUtil;
 
 import java.io.File;
@@ -38,17 +38,11 @@ public class DataHandler {
                 String path = "arenas." + arenaName + ".";
                 Arena arena = new Arena(arenaName);
                 arenasManager.addArena(arena);
-                arena.setDuration(yml.getInt(path + "duration"));
+                arena.setDuration(yml.getDouble(path + "duration"));
+                arena.setBoosterInterval(yml.getDouble(path + "boosterInterval"));
                 arena.setStartHours(yml.getStringList(path + "startHours"));
-                List<Location> spawnLocations = new ArrayList<>();
-                for(String locationString : yml.getStringList(path + "spawnLocations")) {
-                    Location loc = LocationUtil.parseLocation(locationString);
-                    if(loc == null) {
-                        continue;
-                    }
-                    spawnLocations.add(loc);
-                }
-                arena.setSpawnLocations(spawnLocations);
+                arena.setSpawnLocations(LocationUtil.parseList(yml.getStringList(path + "spawnLocations")));
+                arena.setBoosterSpawnLocations(LocationUtil.parseList(yml.getStringList(path + "boosterSpawnLocations")));
                 ConfigurationSection bunniesSection = yml.getConfigurationSection(path + "bunnies");
                 if(bunniesSection == null) {
                     continue;

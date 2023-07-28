@@ -9,15 +9,19 @@
 # Author: Assasin98980
 # GitHub: https://github.com/qWojtpl/BunnySlayer
 
-config: {}
+config:
+  enabled: true
 
 arenas:
   "default":
     duration: 5
+    boosterInterval: 0.5
     startHours:
       - "19:00"
       - "20:00"
     spawnLocations:
+      - "30 30 30 world"
+    boosterSpawnLocations:
       - "30 30 30 world"
     bunnies:
       0:

@@ -6,6 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import pl.bunnyslayer.BunnySlayer;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocationUtil {
 
@@ -32,6 +34,18 @@ public class LocationUtil {
             return null;
         }
         return new Location(w, x, y, z);
+    }
+
+    public static List<Location> parseList(@NotNull List<String> locations) {
+        List<Location> parsedLocations = new ArrayList<>();
+        for(String locationString : locations) {
+            Location loc = parseLocation(locationString);
+            if(loc == null) {
+                continue;
+            }
+            parsedLocations.add(loc);
+        }
+        return parsedLocations;
     }
 
 }
