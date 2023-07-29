@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -40,7 +39,25 @@ public class LivingBooster {
     }
 
     public void applyEffects(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 10, 1));
+        for(String effect : effects) {
+            int amplifier;
+            int duration;
+            try {
+                String[] split = effect.split(" ");
+                if(split.length != 3) {
+                    throw new IllegalArgumentException();
+                }
+                PotionEffectType potionEffectType = PotionEffectType.getByName(split[0]);
+                if(potionEffectType == null) {
+                    throw new IllegalArgumentException();
+                }
+                amplifier = Integer.parseInt(split[1]);
+                duration = Integer.parseInt(split[2]) * 20;
+                player.addPotionEffect(new PotionEffect(potionEffectType, duration, amplifier));
+            } catch(NumberFormatException e) {
+                plugin.getLogger().severe(effect + " is not correct effect! Correct format is EFFECT <AMPLIFIER> <DURATION>");
+            }
+        }
     }
 
     public void remove() {

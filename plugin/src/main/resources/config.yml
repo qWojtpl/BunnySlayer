@@ -34,7 +34,6 @@ arenas:
         speed: 2.3
         percentage: 10
         knockBack: 10
-        damage: 0.3
         exp: 2
     boosters:
       0:

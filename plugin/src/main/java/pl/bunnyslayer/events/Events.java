@@ -1,5 +1,6 @@
 package pl.bunnyslayer.events;
 
+import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Rabbit;
@@ -9,10 +10,10 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.util.Vector;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.arena.Arena;
 import pl.bunnyslayer.arena.ArenasManager;
-import pl.bunnyslayer.boosters.LivingBooster;
 import pl.bunnyslayer.bunnies.LivingBunny;
 import pl.bunnyslayer.gui.GUIManager;
 import pl.bunnyslayer.gui.PluginGUI;
@@ -43,6 +44,26 @@ public class Events implements Listener {
         // Adding points logic
         arena.getLivingBunnies().remove(bunny);
         event.getEntity().remove();
+    }
+
+    @EventHandler
+    public void onBunnyDamage(EntityDamageByEntityEvent event) {
+        if(!(event.getDamager() instanceof Rabbit)) {
+            return;
+        }
+        if(!(event.getEntity() instanceof Player)) {
+            return;
+        }
+        Arena arena = arenasManager.getByBunny(event.getDamager());
+        if(arena == null) {
+            return;
+        }
+        LivingBunny bunny = arena.getLivingBunny((LivingEntity) event.getDamager());
+        if(bunny == null) {
+            return;
+        }
+        event.setCancelled(true);
+        event.getEntity().setVelocity(new Vector(0, bunny.getKnockBack(), 0));
     }
 
     @EventHandler

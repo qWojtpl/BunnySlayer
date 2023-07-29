@@ -62,7 +62,6 @@ public class DataHandler {
                         bunny.setPercentage(yml.getDouble(bunnyPath + "percentage"));
                         bunny.setExperience(yml.getDouble(bunnyPath + "exp"));
                         bunny.setKnockBack(yml.getDouble(bunnyPath + "knockBack"));
-                        bunny.setDamage(yml.getDouble(bunnyPath + "damage"));
                         arena.addCustomBunny(bunny);
                         totalPercent += bunny.getPercentage();
                     }
