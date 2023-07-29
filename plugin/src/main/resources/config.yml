@@ -14,8 +14,8 @@ config:
 
 arenas:
   "default":
-    duration: 5
-    boosterInterval: 0.5
+    duration: 5 # in minutes
+    boosterInterval: 20 # in seconds
     startHours:
       - "19:00"
       - "20:00"
@@ -36,3 +36,10 @@ arenas:
         knockBack: 10
         damage: 0.3
         exp: 2
+    boosters:
+      0:
+        name: "&e&lSpeed booster"
+        percentage: 100
+        item: FEATHER
+        effects:
+          - "SPEED 3 10"

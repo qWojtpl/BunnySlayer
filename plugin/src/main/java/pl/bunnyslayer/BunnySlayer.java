@@ -3,6 +3,7 @@ package pl.bunnyslayer;
 import lombok.Getter;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
+import pl.bunnyslayer.arena.Arena;
 import pl.bunnyslayer.arena.ArenasManager;
 import pl.bunnyslayer.commands.CommandHelper;
 import pl.bunnyslayer.commands.Commands;
@@ -45,6 +46,9 @@ public final class BunnySlayer extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        for(Arena arena : arenasManager.getArenas()) {
+            arena.stopArena();
+        }
         guiManager.closeAllInventories();
         getLogger().info("Disabled.");
     }

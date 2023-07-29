@@ -19,7 +19,7 @@ public class CustomBunny {
     private double experience;
 
     @NotNull
-    public LivingBunny spawnBunny(Location location) {
+    public LivingBunny spawnBunny(@NotNull Location location) {
         LivingEntity e = (LivingEntity) location.getWorld().spawnEntity(location, EntityType.RABBIT);
         e.setCustomNameVisible(true);
         e.setMaxHealth(1);

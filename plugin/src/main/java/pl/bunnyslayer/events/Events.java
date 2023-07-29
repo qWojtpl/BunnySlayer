@@ -5,13 +5,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Rabbit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.arena.Arena;
 import pl.bunnyslayer.arena.ArenasManager;
@@ -46,22 +43,6 @@ public class Events implements Listener {
         // Adding points logic
         arena.getLivingBunnies().remove(bunny);
         event.getEntity().remove();
-    }
-
-    @EventHandler
-    public void onPickup(EntityPickupItemEvent event) {
-        if(!(event.getEntity() instanceof Player)) {
-            return;
-        }
-        Arena arena = arenasManager.getByItem(event.getItem());
-        if(arena == null) {
-            return;
-        }
-        event.setCancelled(true);
-        LivingBooster booster = arena.getLivingBooster(event.getItem());
-        // Adding effect logic
-        arena.getLivingBoosters().remove(booster);
-        event.getItem().remove();
     }
 
     @EventHandler

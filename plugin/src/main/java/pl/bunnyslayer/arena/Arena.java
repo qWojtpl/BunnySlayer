@@ -3,6 +3,7 @@ package pl.bunnyslayer.arena;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Rabbit;
@@ -66,12 +67,17 @@ public class Arena {
         }
         this.started = true;
         arenaTask = plugin.getServer().getScheduler().runTaskLater(plugin, this::stopArena, 20L * 60 * (long) duration).getTaskId();
+        boosterTask = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin,
+                () -> spawnBooster(getRandomBooster()), 0L, 20L * (long) boosterInterval);
         for(int i = 0; i < 50; i++) {
             spawnBunny(getRandomCustomBunny());
         }
     }
 
     public void spawnBunny(CustomBunny bunny) {
+        if(bunny == null) {
+            return;
+        }
         Location spawnLocation = getRandomLocation();
         if(spawnLocation == null) {
             return;
@@ -80,11 +86,14 @@ public class Arena {
     }
 
     public void spawnBooster(CustomBooster booster) {
+        if(booster == null) {
+            return;
+        }
         Location spawnLocation = getRandomBoosterLocation();
         if(spawnLocation == null) {
             return;
         }
-        livingBoosters.add(booster.spawnBooster(spawnLocation));
+        livingBoosters.add(booster.spawnBooster(spawnLocation, this));
     }
 
     public void stopArena() {
@@ -95,6 +104,7 @@ public class Arena {
         plugin.getServer().getScheduler().cancelTask(arenaTask);
         plugin.getServer().getScheduler().cancelTask(boosterTask);
         killAllBunnies();
+        removeAllBoosters();
     }
 
     @Nullable
@@ -127,6 +137,19 @@ public class Arena {
     }
 
     @Nullable
+    public CustomBooster getRandomBooster() {
+        int random = RandomNumber.randomInt(1, 100);
+        double lastPercentage = 0;
+        for(CustomBooster customBooster : customBoosters) {
+            if(random > lastPercentage && random <= customBooster.getPercentage() + lastPercentage) {
+                return customBooster;
+            }
+            lastPercentage += customBooster.getPercentage();
+        }
+        return null;
+    }
+
+    @Nullable
     public LivingBunny getLivingBunny(LivingEntity entity) {
         for(LivingBunny livingBunny : livingBunnies) {
             if(livingBunny.getEntity().equals(entity)) {
@@ -137,9 +160,9 @@ public class Arena {
     }
 
     @Nullable
-    public LivingBooster getLivingBooster(Item item) {
+    public LivingBooster getLivingBooster(Entity entity) {
         for(LivingBooster livingBooster : livingBoosters) {
-            if(livingBooster.getBoosterItem().equals(item)) {
+            if(livingBooster.getBoosterEntity().equals(entity)) {
                 return livingBooster;
             }
         }
@@ -151,6 +174,13 @@ public class Arena {
             bunny.getEntity().remove();
         }
         livingBunnies.clear();
+    }
+
+    public void removeAllBoosters() {
+        for(LivingBooster booster : livingBoosters) {
+            booster.remove();
+        }
+        livingBoosters.clear();
     }
 
 }

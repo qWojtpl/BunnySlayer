@@ -53,10 +53,10 @@ public class ArenasManager {
     }
 
     @Nullable
-    public Arena getByItem(Entity entity) {
+    public Arena getByBooster(Entity entity) {
         for(Arena arena : arenas) {
             for(LivingBooster booster : arena.getLivingBoosters()) {
-                if(booster.getBoosterItem().equals(entity)) {
+                if(booster.getBoosterEntity().equals(entity)) {
                     return arena;
                 }
             }
