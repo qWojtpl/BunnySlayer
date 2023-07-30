@@ -2,6 +2,8 @@ package pl.bunnyslayer.arena;
 
 import lombok.Getter;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.boosters.LivingBooster;
 import pl.bunnyslayer.bunnies.LivingBunny;
@@ -20,6 +22,8 @@ public class ArenasManager {
     private final DataHandler dataHandler = plugin.getDataHandler();
     private final List<Arena> arenas = new ArrayList<>();
     private final HashMap<String, Double> weekPoints = new HashMap<>();
+    private final HashMap<String, List<ItemStack>> rewards = new HashMap<>();
+    private final HashMap<String, List<ItemStack>> playerRewards = new HashMap<>();
 
     public ArenasManager() {
         plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
@@ -30,6 +34,10 @@ public class ArenasManager {
                         arena.setStarted(true);
                     }
                 }
+            }
+            if(DateManager.getDayName().equals(dataHandler.getPayday())) {
+                assignTopRewards();
+                clearPoints();
             }
         }, 0L, 20L * 60);
     }
@@ -68,6 +76,11 @@ public class ArenasManager {
         return null;
     }
 
+    @NotNull
+    public List<ItemStack> getPlayerRewards(String player) {
+        return playerRewards.getOrDefault(player, new ArrayList<>());
+    }
+
     public void addArena(Arena arena) {
         if(getByName(arena.getName()) != null) {
             plugin.getLogger().severe("Cannot add arena: " + arena.getName() + " - found duplicated name!");
@@ -90,6 +103,37 @@ public class ArenasManager {
             dataHandler.savePoints(player, null);
         }
         weekPoints.clear();
+    }
+
+    public void assignTopRewards() {
+        List<String> exclude = new ArrayList<>();
+        for(int i = 0; i < 3; i++) {
+            double max = 0;
+            String maxPlayer = "";
+            for(String player : weekPoints.keySet()) {
+                if(exclude.contains(player)) {
+                    continue;
+                }
+                if(weekPoints.get(player) > max) {
+                    max = weekPoints.get(player);
+                    maxPlayer = player;
+                }
+            }
+            if(!maxPlayer.equals("")) {
+                exclude.add(maxPlayer);
+                assignReward(maxPlayer, "top" + i);
+            }
+        }
+    }
+
+    public void assignReward(String player, String rewardKey) {
+        if(!rewards.containsKey(rewardKey)) {
+            return;
+        }
+        List<ItemStack> currentRewards = getPlayerRewards(player);
+        currentRewards.addAll(rewards.get(rewardKey));
+        playerRewards.put(player, currentRewards);
+        dataHandler.savePlayerRewards(player);
     }
 
 }

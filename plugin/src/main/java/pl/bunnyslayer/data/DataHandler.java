@@ -132,6 +132,10 @@ public class DataHandler {
         data.set("points." + player, points);
     }
 
+    public void savePlayerRewards(String player) {
+        ItemLoader.parseList(data, "rewards." + player, arenasManager.getPlayerRewards(player));
+    }
+
     public File getConfigFile() {
         return getFile("config.yml");
     }
