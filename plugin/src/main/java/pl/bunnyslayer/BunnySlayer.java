@@ -50,6 +50,7 @@ public final class BunnySlayer extends JavaPlugin {
             arena.stopArena();
         }
         guiManager.closeAllInventories();
+        dataHandler.saveAll();
         getLogger().info("Disabled.");
     }
 

@@ -5,17 +5,21 @@ import org.bukkit.entity.Entity;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.boosters.LivingBooster;
 import pl.bunnyslayer.bunnies.LivingBunny;
+import pl.bunnyslayer.data.DataHandler;
 import pl.bunnyslayer.util.DateManager;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Getter
 public class ArenasManager {
 
     private final BunnySlayer plugin = BunnySlayer.getInstance();
+    private final DataHandler dataHandler = plugin.getDataHandler();
     private final List<Arena> arenas = new ArrayList<>();
+    private final HashMap<String, Double> weekPoints = new HashMap<>();
 
     public ArenasManager() {
         plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
@@ -72,8 +76,20 @@ public class ArenasManager {
         arenas.add(arena);
     }
 
+    public void addPoints(String player, double points) {
+        weekPoints.put(player, weekPoints.getOrDefault(player, 0.0) + points);
+        dataHandler.savePoints(player, weekPoints.get(player));
+    }
+
     public void clearArenas() {
         arenas.clear();
+    }
+
+    public void clearPoints() {
+        for(String player : weekPoints.keySet()) {
+            dataHandler.savePoints(player, null);
+        }
+        weekPoints.clear();
     }
 
 }

@@ -4,6 +4,12 @@ import java.util.Calendar;
 
 public class DateManager {
 
+    private final static String[] days = new String[]{"SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"};
+
+    public static String getDayName() {
+        return days[getCalendar().get(Calendar.DAY_OF_WEEK)];
+    }
+
     public static String getHour() {
         int hour = getCalendar().get(Calendar.HOUR_OF_DAY);
         String returnable = hour + "";

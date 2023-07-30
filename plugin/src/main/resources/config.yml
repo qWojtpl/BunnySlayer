@@ -11,6 +11,7 @@
 
 config:
   enabled: true
+  payday: SUNDAY
 
 arenas:
   "default":

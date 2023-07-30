@@ -16,6 +16,7 @@ import pl.bunnyslayer.util.RandomNumber;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Getter
@@ -23,6 +24,7 @@ import java.util.List;
 public class Arena {
 
     private final BunnySlayer plugin = BunnySlayer.getInstance();
+    private final ArenasManager arenasManager = plugin.getArenasManager();
     private final String name;
     private double duration;
     private double boosterInterval;
@@ -32,6 +34,7 @@ public class Arena {
     private List<String> startHours = new ArrayList<>();
     private List<Location> spawnLocations = new ArrayList<>();
     private List<Location> boosterSpawnLocations = new ArrayList<>();
+    private final HashMap<String, Double> currentPoints = new HashMap<>();
     private final List<CustomBunny> customBunnies = new ArrayList<>();
     private final List<LivingBunny> livingBunnies = new ArrayList<>();
     private final List<CustomBooster> customBoosters = new ArrayList<>();
@@ -47,6 +50,10 @@ public class Arena {
 
     public void addCustomBooster(CustomBooster customBooster) {
         customBoosters.add(customBooster);
+    }
+
+    public void addPoints(String player, double points) {
+        currentPoints.put(player, currentPoints.getOrDefault(player, 0.0));
     }
 
     public void setStarted(boolean state) {
@@ -105,6 +112,10 @@ public class Arena {
         plugin.getServer().getScheduler().cancelTask(boosterTask);
         killAllBunnies();
         removeAllBoosters();
+        for(String player : currentPoints.keySet()) {
+            arenasManager.addPoints(player, currentPoints.get(player));
+        }
+        currentPoints.clear();
     }
 
     @Nullable

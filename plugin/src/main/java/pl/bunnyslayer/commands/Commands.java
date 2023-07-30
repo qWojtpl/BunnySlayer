@@ -18,7 +18,9 @@ public class Commands implements CommandExecutor {
                 for(Arena arena : plugin.getArenasManager().getArenas()) {
                     arena.stopArena();
                 }
+                plugin.getDataHandler().saveAll();
                 plugin.getDataHandler().loadAll();
+                sender.sendMessage("reloaded.");
                 return true;
             }
         }

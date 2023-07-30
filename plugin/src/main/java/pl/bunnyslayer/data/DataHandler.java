@@ -1,7 +1,6 @@
 package pl.bunnyslayer.data;
 
 import lombok.Getter;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,8 +14,7 @@ import pl.bunnyslayer.bunnies.CustomBunny;
 import pl.bunnyslayer.util.LocationUtil;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 @Getter
 public class DataHandler {
@@ -25,6 +23,7 @@ public class DataHandler {
     private final ArenasManager arenasManager = plugin.getArenasManager();
     private final MessagesManager messagesManager = plugin.getMessagesManager();
     private boolean pluginEnabled;
+    private String payday;
     private YamlConfiguration data;
 
     public void loadAll() {
@@ -40,6 +39,7 @@ public class DataHandler {
         if(!pluginEnabled) {
             return;
         }
+        payday = yml.getString("config.payday", "SUNDAY").toUpperCase();
         ConfigurationSection arenaSection = yml.getConfigurationSection("arenas");
         if(arenaSection != null) {
             for(String arenaName : arenaSection.getKeys(false)) {
@@ -57,7 +57,7 @@ public class DataHandler {
                     for(String bunnyKey : bunniesSection.getKeys(false)) {
                         String bunnyPath = path + "bunnies." + bunnyKey + ".";
                         CustomBunny bunny = new CustomBunny();
-                        bunny.setBunnyType(BunnyType.getType(yml.getString(bunnyPath + "type")));
+                        bunny.setBunnyType(BunnyType.getType(yml.getString(bunnyPath + "type", "NORMAL")));
                         bunny.setSpeed(yml.getDouble(bunnyPath + "speed"));
                         bunny.setPercentage(yml.getDouble(bunnyPath + "percentage"));
                         bunny.setExperience(yml.getDouble(bunnyPath + "exp"));
@@ -112,6 +112,24 @@ public class DataHandler {
     public void loadData() {
         data = null;
         data = YamlConfiguration.loadConfiguration(getDataFile());
+        ConfigurationSection pointsSection = data.getConfigurationSection("points");
+        if(pointsSection != null) {
+            for(String player : pointsSection.getKeys(false)) {
+                arenasManager.getWeekPoints().put(player, data.getDouble("points." + player));
+            }
+        }
+    }
+
+    public void saveAll() {
+        try {
+            data.save(getDataFile());
+        } catch(IOException e) {
+            plugin.getLogger().severe("Cannot save data.yml: " + e.getMessage());
+        }
+    }
+
+    public void savePoints(String player, Double points) {
+        data.set("points." + player, points);
     }
 
     public File getConfigFile() {

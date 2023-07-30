@@ -39,9 +39,12 @@ public class Events implements Listener {
         if(arena == null) {
             return;
         }
-        event.setCancelled(true);
         LivingBunny bunny = arena.getLivingBunny((LivingEntity) event.getEntity());
-        // Adding points logic
+        if(bunny == null) {
+            return;
+        }
+        event.setCancelled(true);
+        arena.addPoints(event.getDamager().getName(), bunny.getExperience());
         arena.getLivingBunnies().remove(bunny);
         event.getEntity().remove();
     }
