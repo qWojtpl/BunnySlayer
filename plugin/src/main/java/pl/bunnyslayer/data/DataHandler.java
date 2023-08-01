@@ -99,6 +99,7 @@ public class DataHandler {
     }
 
     public void loadMessages() {
+        messagesManager.clearMessages();
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(getMessagesFile());
         ConfigurationSection messagesSection = yml.getConfigurationSection("messages");
         if(messagesSection == null) {

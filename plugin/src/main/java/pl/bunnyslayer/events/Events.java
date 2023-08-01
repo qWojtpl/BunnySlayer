@@ -25,10 +25,7 @@ public class Events implements Listener {
     private final GUIManager guiManager = plugin.getGuiManager();
 
     @EventHandler
-    public void onDamage(EntityDamageByEntityEvent event) {
-        if(!event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
-            return;
-        }
+    public void onBunnyDamage(EntityDamageByEntityEvent event) {
         if(!(event.getEntity() instanceof Rabbit)) {
             return;
         }
@@ -44,13 +41,16 @@ public class Events implements Listener {
             return;
         }
         event.setCancelled(true);
+        if(!event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
+            return;
+        }
         arena.addPoints(event.getDamager().getName(), bunny.getExperience());
         arena.getLivingBunnies().remove(bunny);
         event.getEntity().remove();
     }
 
     @EventHandler
-    public void onBunnyDamage(EntityDamageByEntityEvent event) {
+    public void onPlayerDamage(EntityDamageByEntityEvent event) {
         if(!(event.getDamager() instanceof Rabbit)) {
             return;
         }

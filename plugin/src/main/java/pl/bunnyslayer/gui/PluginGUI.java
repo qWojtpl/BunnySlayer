@@ -117,6 +117,9 @@ public abstract class PluginGUI {
     public void setGUIUpdating(boolean updating) {
         this.updating = updating;
         if(updating) {
+            if(updateTask != -1) {
+                return;
+            }
             updateTask = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(
                     plugin, this::onUpdate, 0L, updateInterval);
         } else {

@@ -1,7 +1,9 @@
 package pl.bunnyslayer.arena;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import pl.bunnyslayer.BunnySlayer;
@@ -9,6 +11,7 @@ import pl.bunnyslayer.boosters.LivingBooster;
 import pl.bunnyslayer.bunnies.LivingBunny;
 import pl.bunnyslayer.data.DataHandler;
 import pl.bunnyslayer.util.DateManager;
+import pl.bunnyslayer.util.PlayerUtil;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -16,31 +19,16 @@ import java.util.HashMap;
 import java.util.List;
 
 @Getter
+@Setter
 public class ArenasManager {
 
     private final BunnySlayer plugin = BunnySlayer.getInstance();
-    private final DataHandler dataHandler = plugin.getDataHandler();
+    private DataHandler dataHandler;
     private final List<Arena> arenas = new ArrayList<>();
+    private final List<String> clearDates = new ArrayList<>();
     private final HashMap<String, Double> weekPoints = new HashMap<>();
     private final HashMap<String, List<ItemStack>> rewards = new HashMap<>();
     private final HashMap<String, List<ItemStack>> playerRewards = new HashMap<>();
-
-    public ArenasManager() {
-        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-            String currentHour = DateManager.getHour() + ":" + DateManager.getMinute();
-            for(Arena arena : arenas) {
-                for(String hour : arena.getStartHours()) {
-                    if(hour.equals(currentHour)) {
-                        arena.setStarted(true);
-                    }
-                }
-            }
-            if(DateManager.getDayName().equals(dataHandler.getPayday())) {
-                assignTopRewards();
-                clearPoints();
-            }
-        }, 0L, 20L * 60);
-    }
 
     @Nullable
     public Arena getByName(@Nullable String name) {
@@ -134,6 +122,30 @@ public class ArenasManager {
         currentRewards.addAll(rewards.get(rewardKey));
         playerRewards.put(player, currentRewards);
         dataHandler.savePlayerRewards(player);
+    }
+
+    public void receiveReward(String player, int rewardIndex) {
+        Player p = PlayerUtil.getPlayer(player);
+        if(p == null) {
+            return;
+        }
+    }
+
+    public void startTask() {
+        plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            String currentHour = DateManager.getFormatHour() + ":" + DateManager.getFormatMinute();
+            for(Arena arena : arenas) {
+                for(String hour : arena.getStartHours()) {
+                    if(hour.equals(currentHour)) {
+                        arena.setStarted(true);
+                    }
+                }
+            }
+            if(DateManager.getDayName().equals(dataHandler.getPayday()) && !clearDates.contains(DateManager.getFormattedDate("%Y/%M/%D"))) {
+                assignTopRewards();
+                clearPoints();
+            }
+        }, 0L, 20L * 60);
     }
 
 }

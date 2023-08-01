@@ -41,6 +41,8 @@ public final class BunnySlayer extends JavaPlugin {
         }
         getServer().getPluginManager().registerEvents(events, this);
         dataHandler.loadAll();
+        arenasManager.setDataHandler(dataHandler);
+        arenasManager.startTask();
         getLogger().info("Enabled!");
     }
 

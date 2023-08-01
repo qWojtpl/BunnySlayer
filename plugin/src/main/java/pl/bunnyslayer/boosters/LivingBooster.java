@@ -2,6 +2,8 @@ package pl.bunnyslayer.boosters;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -32,6 +34,8 @@ public class LivingBooster {
                     continue;
                 }
                 applyEffects((Player) e);
+                e.getWorld().spawnParticle(Particle.CLOUD, e.getLocation(), 10);
+                ((Player) e).playSound(e.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 3.0F);
                 remove();
                 return;
             }
@@ -53,6 +57,10 @@ public class LivingBooster {
                 }
                 amplifier = Integer.parseInt(split[1]);
                 duration = Integer.parseInt(split[2]) * 20;
+                PotionEffect playerPotionEffect = player.getPotionEffect(potionEffectType);
+                if(playerPotionEffect != null && playerPotionEffect.getAmplifier() == amplifier) {
+                    duration += playerPotionEffect.getDuration();
+                }
                 player.addPotionEffect(new PotionEffect(potionEffectType, duration, amplifier));
             } catch(NumberFormatException e) {
                 plugin.getLogger().severe(effect + " is not correct effect! Correct format is EFFECT <AMPLIFIER> <DURATION>");
