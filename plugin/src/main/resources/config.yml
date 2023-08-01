@@ -24,6 +24,8 @@ arenas:
       - "30 30 30 world"
     boosterSpawnLocations:
       - "30 30 30 world"
+    bunnyCount: 3
+    music: chad
     bunnies:
       0:
         type: NORMAL
@@ -40,6 +42,6 @@ arenas:
       0:
         name: "&e&lSpeed booster"
         percentage: 100
-        item: FEATHER
+        item: CYAN_WOOL
         effects:
           - "SPEED 3 10"

@@ -12,6 +12,8 @@ import pl.bunnyslayer.boosters.CustomBooster;
 import pl.bunnyslayer.boosters.LivingBooster;
 import pl.bunnyslayer.bunnies.CustomBunny;
 import pl.bunnyslayer.bunnies.LivingBunny;
+import pl.bunnyslayer.music.MusicPlayer;
+import pl.bunnyslayer.util.PlayerUtil;
 import pl.bunnyslayer.util.RandomNumber;
 
 import javax.annotation.Nullable;
@@ -28,9 +30,12 @@ public class Arena {
     private final String name;
     private double duration;
     private double boosterInterval;
+    private int bunnyCount = 3;
     private int arenaTask = -1;
     private int boosterTask = -1;
     private boolean started;
+    private String musicName;
+    private MusicPlayer musicPlayer;
     private List<String> startHours = new ArrayList<>();
     private List<Location> spawnLocations = new ArrayList<>();
     private List<Location> boosterSpawnLocations = new ArrayList<>();
@@ -76,8 +81,14 @@ public class Arena {
         arenaTask = plugin.getServer().getScheduler().runTaskLater(plugin, this::stopArena, 20L * 60 * (long) duration).getTaskId();
         boosterTask = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin,
                 () -> spawnBooster(getRandomBooster()), 0L, 20L * (long) boosterInterval);
-        for(int i = 0; i < 50; i++) {
+        for(int i = 0; i < bunnyCount; i++) {
             spawnBunny(getRandomCustomBunny());
+        }
+        if(musicName != null) {
+            musicPlayer = plugin.getMusicManager().createPlayer(musicName, getRandomLocation());
+            if(musicPlayer != null) {
+                musicPlayer.start();
+            }
         }
     }
 
@@ -116,6 +127,10 @@ public class Arena {
             arenasManager.addPoints(player, currentPoints.get(player));
         }
         currentPoints.clear();
+        if(musicPlayer != null) {
+            plugin.getMusicManager().removePlayer(musicPlayer);
+            musicPlayer = null;
+        }
     }
 
     @Nullable

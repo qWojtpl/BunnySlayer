@@ -11,6 +11,8 @@ import pl.bunnyslayer.arena.ArenasManager;
 import pl.bunnyslayer.boosters.CustomBooster;
 import pl.bunnyslayer.bunnies.BunnyType;
 import pl.bunnyslayer.bunnies.CustomBunny;
+import pl.bunnyslayer.music.MusicManager;
+import pl.bunnyslayer.music.MusicSchema;
 import pl.bunnyslayer.util.LocationUtil;
 
 import java.io.File;
@@ -20,6 +22,7 @@ import java.io.IOException;
 public class DataHandler {
 
     private final BunnySlayer plugin = BunnySlayer.getInstance();
+    private final MusicManager musicManager = plugin.getMusicManager();
     private final ArenasManager arenasManager = plugin.getArenasManager();
     private final MessagesManager messagesManager = plugin.getMessagesManager();
     private boolean pluginEnabled;
@@ -33,6 +36,7 @@ public class DataHandler {
     }
 
     public void loadConfig() {
+        musicManager.clearSchemas();
         arenasManager.clearArenas();
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(getConfigFile());
         pluginEnabled = yml.getBoolean("config.enabled");
@@ -51,6 +55,8 @@ public class DataHandler {
                 arena.setStartHours(yml.getStringList(path + "startHours"));
                 arena.setSpawnLocations(LocationUtil.parseList(yml.getStringList(path + "spawnLocations")));
                 arena.setBoosterSpawnLocations(LocationUtil.parseList(yml.getStringList(path + "boosterSpawnLocations")));
+                arena.setBunnyCount(yml.getInt(path + "bunnyCount", 3));
+                arena.setMusicName(yml.getString(path + "musicName"));
                 ConfigurationSection bunniesSection = yml.getConfigurationSection(path + "bunnies");
                 if(bunniesSection != null) {
                     double totalPercent = 0;
@@ -95,6 +101,15 @@ public class DataHandler {
                     }
                 }
             }
+        }
+        ConfigurationSection musicSection = yml.getConfigurationSection("music");
+        if(musicSection == null) {
+            return;
+        }
+        for(String name : musicSection.getKeys(false)) {
+            MusicSchema schema = new MusicSchema(name);
+            schema.setMusicData(yml.getStringList("music." + name));
+            musicManager.addSchema(schema);
         }
     }
 

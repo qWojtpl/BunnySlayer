@@ -47,6 +47,7 @@ public class Events implements Listener {
         arena.addPoints(event.getDamager().getName(), bunny.getExperience());
         arena.getLivingBunnies().remove(bunny);
         event.getEntity().remove();
+        arena.spawnBunny(arena.getRandomCustomBunny());
     }
 
     @EventHandler
