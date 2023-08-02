@@ -64,7 +64,7 @@ public class DataHandler {
                         String bunnyPath = path + "bunnies." + bunnyKey + ".";
                         CustomBunny bunny = new CustomBunny();
                         bunny.setBunnyType(BunnyType.getType(yml.getString(bunnyPath + "type", "NORMAL")));
-                        bunny.setSpeed(yml.getDouble(bunnyPath + "speed"));
+                        bunny.setSpeed(yml.getInt(bunnyPath + "speed"));
                         bunny.setPercentage(yml.getDouble(bunnyPath + "percentage"));
                         bunny.setExperience(yml.getDouble(bunnyPath + "exp"));
                         bunny.setKnockBack(yml.getDouble(bunnyPath + "knockBack"));

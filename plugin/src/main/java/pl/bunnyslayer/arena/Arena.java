@@ -4,16 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Rabbit;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.boosters.CustomBooster;
 import pl.bunnyslayer.boosters.LivingBooster;
 import pl.bunnyslayer.bunnies.CustomBunny;
 import pl.bunnyslayer.bunnies.LivingBunny;
 import pl.bunnyslayer.music.MusicPlayer;
-import pl.bunnyslayer.util.PlayerUtil;
 import pl.bunnyslayer.util.RandomNumber;
 
 import javax.annotation.Nullable;
@@ -58,7 +55,11 @@ public class Arena {
     }
 
     public void addPoints(String player, double points) {
-        currentPoints.put(player, currentPoints.getOrDefault(player, 0.0));
+        currentPoints.put(player, getPlayerCurrentPoints(player) + points);
+    }
+
+    public double getPlayerCurrentPoints(String player) {
+        return currentPoints.getOrDefault(player, 0.0);
     }
 
     public void setStarted(boolean state) {
@@ -85,9 +86,12 @@ public class Arena {
             spawnBunny(getRandomCustomBunny());
         }
         if(musicName != null) {
-            musicPlayer = plugin.getMusicManager().createPlayer(musicName, getRandomLocation());
-            if(musicPlayer != null) {
-                musicPlayer.start();
+            Location loc = getRandomLocation();
+            if(loc != null) {
+                musicPlayer = plugin.getMusicManager().createPlayer(musicName, loc);
+                if(musicPlayer != null) {
+                    musicPlayer.start();
+                }
             }
         }
     }

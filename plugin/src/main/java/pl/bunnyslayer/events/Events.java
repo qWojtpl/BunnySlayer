@@ -17,6 +17,7 @@ import pl.bunnyslayer.arena.ArenasManager;
 import pl.bunnyslayer.bunnies.LivingBunny;
 import pl.bunnyslayer.gui.GUIManager;
 import pl.bunnyslayer.gui.PluginGUI;
+import pl.bunnyslayer.util.PlayerUtil;
 
 public class Events implements Listener {
 
@@ -29,9 +30,6 @@ public class Events implements Listener {
         if(!(event.getEntity() instanceof Rabbit)) {
             return;
         }
-        if(!(event.getDamager() instanceof Player)) {
-            return;
-        }
         Arena arena = arenasManager.getByBunny(event.getEntity());
         if(arena == null) {
             return;
@@ -41,6 +39,9 @@ public class Events implements Listener {
             return;
         }
         event.setCancelled(true);
+        if(!(event.getDamager() instanceof Player)) {
+            return;
+        }
         if(!event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
             return;
         }
@@ -48,6 +49,8 @@ public class Events implements Listener {
         arena.getLivingBunnies().remove(bunny);
         event.getEntity().remove();
         arena.spawnBunny(arena.getRandomCustomBunny());
+        PlayerUtil.sendActionBarMessage((Player) event.getDamager(), "Your points is now "
+                + arena.getPlayerCurrentPoints(event.getDamager().getName()));
     }
 
     @EventHandler

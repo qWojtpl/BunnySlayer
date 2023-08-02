@@ -25,7 +25,7 @@ arenas:
     boosterSpawnLocations:
       - "30 30 30 world"
     bunnyCount: 3
-    music: chad
+    musicName: crabrave
     bunnies:
       0:
         type: NORMAL
@@ -45,3 +45,27 @@ arenas:
         item: CYAN_WOOL
         effects:
           - "SPEED 3 10"
+
+music:
+  crabrave:
+    - "banjo 8 0"
+    - "banjo 16 4"
+    - "banjo 14 4"
+    - "banjo 14 4"
+    - "banjo 8 2"
+    - "banjo 8 4"
+    - "banjo 15 2"
+    - "banjo 11 4"
+    - "banjo 11 4"
+    - "banjo 8 2"
+    - "banjo 8 4"
+    - "banjo 15 2"
+    - "banjo 11 4"
+    - "banjo 11 4"
+    - "banjo 6 2"
+    - "banjo 6 4"
+    - "banjo 10 4"
+    - "banjo 10 4"
+    - "banjo 11 2"
+    - "banjo 10 2"
+    - "loop 2"
