@@ -52,7 +52,11 @@ public class Events implements Listener {
                 event.getEntity().getLocation(),
                 30,
                 Material.SNOW_BLOCK.createBlockData());
-        ((Player) event.getDamager()).playSound(event.getDamager().getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.75F, 2.0F);
+        ((Player) event.getDamager()).playSound(
+                event.getDamager().getLocation(),
+                Sound.ENTITY_GENERIC_EXPLODE,
+                0.75F,
+                (float) (2 * bunny.getExperience()));
         arena.addPoints(event.getDamager().getName(), bunny.getExperience());
         arena.getLivingBunnies().remove(bunny);
         event.getEntity().remove();
