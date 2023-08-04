@@ -18,7 +18,7 @@ public class CustomBunny {
     private BunnyType bunnyType;
     private int speed;
     private double percentage;
-    private double knockBack;
+    private double launchForce;
     private double experience;
 
     @NotNull
@@ -34,7 +34,7 @@ public class CustomBunny {
         location.getWorld().spawnParticle(Particle.GLOW_SQUID_INK, location, 3);
         LivingBunny bunny = new LivingBunny(e);
         bunny.setExperience(experience);
-        bunny.setKnockBack(knockBack);
+        bunny.setLaunchForce(launchForce);
         bunny.createName();
         return bunny;
     }

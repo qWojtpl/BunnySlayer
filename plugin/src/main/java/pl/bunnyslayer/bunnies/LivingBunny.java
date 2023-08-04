@@ -12,7 +12,7 @@ public class LivingBunny {
     private final LivingEntity entity;
     private BunnyType bunnyType = BunnyType.NORMAL;
     private double experience;
-    private double knockBack;
+    private double launchForce;
 
     public LivingBunny(LivingEntity entity) {
         this.entity = entity;

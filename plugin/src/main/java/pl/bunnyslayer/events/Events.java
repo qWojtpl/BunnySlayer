@@ -1,6 +1,8 @@
 package pl.bunnyslayer.events;
 
-import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Rabbit;
@@ -45,11 +47,17 @@ public class Events implements Listener {
         if(!event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) {
             return;
         }
+        event.getEntity().getWorld().spawnParticle(
+                Particle.BLOCK_CRACK,
+                event.getEntity().getLocation(),
+                30,
+                Material.SNOW_BLOCK.createBlockData());
+        ((Player) event.getDamager()).playSound(event.getDamager().getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 0.75F, 2.0F);
         arena.addPoints(event.getDamager().getName(), bunny.getExperience());
         arena.getLivingBunnies().remove(bunny);
         event.getEntity().remove();
         arena.spawnBunny(arena.getRandomCustomBunny());
-        PlayerUtil.sendActionBarMessage((Player) event.getDamager(), "Your points is now "
+        PlayerUtil.sendActionBarMessage((Player) event.getDamager(), "Your points are now "
                 + arena.getPlayerCurrentPoints(event.getDamager().getName()));
     }
 
@@ -70,7 +78,7 @@ public class Events implements Listener {
             return;
         }
         event.setCancelled(true);
-        event.getEntity().setVelocity(new Vector(0, bunny.getKnockBack(), 0));
+        event.getEntity().setVelocity(new Vector(0, bunny.getLaunchForce(), 0));
     }
 
     @EventHandler

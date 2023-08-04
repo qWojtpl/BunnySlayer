@@ -12,6 +12,7 @@ import pl.bunnyslayer.data.MessagesManager;
 import pl.bunnyslayer.events.Events;
 import pl.bunnyslayer.gui.GUIManager;
 import pl.bunnyslayer.music.MusicManager;
+import pl.bunnyslayer.permissions.PermissionManager;
 
 @Getter
 public final class BunnySlayer extends JavaPlugin {
@@ -19,6 +20,7 @@ public final class BunnySlayer extends JavaPlugin {
     private static BunnySlayer main;
     private MusicManager musicManager;
     private ArenasManager arenasManager;
+    private PermissionManager permissionManager;
     private CommandHelper commandHelper;
     private Commands commands;
     private MessagesManager messagesManager;
@@ -31,6 +33,7 @@ public final class BunnySlayer extends JavaPlugin {
         main = this;
         this.musicManager = new MusicManager();
         this.arenasManager = new ArenasManager();
+        this.permissionManager = new PermissionManager();
         this.commandHelper = new CommandHelper();
         this.commands = new Commands();
         this.messagesManager = new MessagesManager();

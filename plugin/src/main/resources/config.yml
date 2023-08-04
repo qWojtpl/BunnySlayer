@@ -36,7 +36,7 @@ arenas:
         type: KILLER
         speed: 2.3
         percentage: 10
-        knockBack: 10
+        launchForce: 10
         exp: 2
     boosters:
       0:
