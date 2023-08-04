@@ -17,13 +17,14 @@ public class MessagesManager {
     @NotNull
     public String getMessage(String key) {
         return messages.getOrDefault(key, key)
-                .replace("%prefix%", getPrefix()
-                .replace("&", "§"));
+                .replace("&", "§")
+                .replace("%prefix%", getPrefix());
     }
 
     @NotNull
     public String getPrefix() {
-        return messages.getOrDefault("prefix", "%prefix%");
+        return messages.getOrDefault("prefix", "%prefix%")
+                .replace("&", "§");
     }
 
     public void clearMessages() {

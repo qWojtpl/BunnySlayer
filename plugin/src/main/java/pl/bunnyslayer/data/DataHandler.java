@@ -47,6 +47,12 @@ public class DataHandler {
             return;
         }
         payday = yml.getString("config.payday", "SUNDAY").toUpperCase();
+        ConfigurationSection permissionSection = yml.getConfigurationSection("permissions");
+        if(permissionSection != null) {
+            for(String permissionKey : permissionSection.getKeys(false)) {
+                permissionManager.addPermission(permissionKey, yml.getString("permissions." + permissionKey));
+            }
+        }
         ConfigurationSection arenaSection = yml.getConfigurationSection("arenas");
         if(arenaSection != null) {
             for(String arenaName : arenaSection.getKeys(false)) {

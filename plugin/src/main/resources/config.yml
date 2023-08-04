@@ -13,6 +13,13 @@ config:
   enabled: true
   payday: SUNDAY
 
+permissions:
+  reload: bs.reload
+  startArena: bs.start
+  stopArena: bs.stop
+  arenaInfo: bs.info
+  nextEvent: bs.event
+
 arenas:
   "default":
     duration: 5 # in minutes

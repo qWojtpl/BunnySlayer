@@ -5,12 +5,14 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.boosters.CustomBooster;
 import pl.bunnyslayer.boosters.LivingBooster;
 import pl.bunnyslayer.bunnies.CustomBunny;
 import pl.bunnyslayer.bunnies.LivingBunny;
 import pl.bunnyslayer.music.MusicPlayer;
+import pl.bunnyslayer.util.LocationUtil;
 import pl.bunnyslayer.util.RandomNumber;
 
 import javax.annotation.Nullable;
@@ -197,6 +199,24 @@ public class Arena {
             }
         }
         return null;
+    }
+
+    @NotNull
+    public List<String> getSpawnLocationsString() {
+        List<String> stringList = new ArrayList<>();
+        for(Location spawnLocation : spawnLocations) {
+            stringList.add(LocationUtil.locationToString(spawnLocation));
+        }
+        return stringList;
+    }
+
+    @NotNull
+    public List<String> getBoosterSpawnLocationsString() {
+        List<String> stringList = new ArrayList<>();
+        for(Location spawnLocation : boosterSpawnLocations) {
+            stringList.add(LocationUtil.locationToString(spawnLocation));
+        }
+        return stringList;
     }
 
     public void killAllBunnies() {

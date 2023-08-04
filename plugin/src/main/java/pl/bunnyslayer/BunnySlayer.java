@@ -21,9 +21,9 @@ public final class BunnySlayer extends JavaPlugin {
     private MusicManager musicManager;
     private ArenasManager arenasManager;
     private PermissionManager permissionManager;
+    private MessagesManager messagesManager;
     private Commands commands;
     private CommandHelper commandHelper;
-    private MessagesManager messagesManager;
     private DataHandler dataHandler;
     private GUIManager guiManager;
     private Events events;
@@ -34,9 +34,9 @@ public final class BunnySlayer extends JavaPlugin {
         this.musicManager = new MusicManager();
         this.arenasManager = new ArenasManager();
         this.permissionManager = new PermissionManager();
+        this.messagesManager = new MessagesManager();
         this.commands = new Commands();
         this.commandHelper = new CommandHelper();
-        this.messagesManager = new MessagesManager();
         this.dataHandler = new DataHandler();
         this.guiManager = new GUIManager();
         this.events = new Events();

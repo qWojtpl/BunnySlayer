@@ -1,5 +1,11 @@
 messages:
-  prefix: "&6[&aBunnySlayer&6]"
+  prefix: "&6[&2BunnySlayer&6] "
   noPermission: "%prefix%&cYou don't have permission!"
-  noAccess: " &cYou don't have access to any subcommand."
+  noAccess: "&cYou don't have access to any subcommand."
   reloaded: "%prefix%&aReloaded!"
+  correctUsage: "%prefix%&cCorrect usage: &6"
+  notFoundArena: "%prefix%&cNot found arena: &6"
+  arenaAlreadyStarted: "%prefix%&cThis arena is already started!"
+  arenaSuccessfullyStarted: "%prefix%&aSuccessfully started arena: &6"
+  arenaNotStarted: "%prefix%&cThis arena is not started!"
+  arenaSuccessfullyStopped: "%prefix%&aSuccessfully stopped arena: &6"

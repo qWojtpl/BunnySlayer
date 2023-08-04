@@ -2,6 +2,7 @@ package pl.bunnyslayer.boosters;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.GameMode;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
@@ -31,6 +32,9 @@ public class LivingBooster {
             List<Entity> entities = boosterEntity.getNearbyEntities(1, 1, 1);
             for(Entity e : entities) {
                 if(!(e instanceof Player)) {
+                    continue;
+                }
+                if(((Player) e).getGameMode().equals(GameMode.SPECTATOR)) {
                     continue;
                 }
                 applyEffects((Player) e);
