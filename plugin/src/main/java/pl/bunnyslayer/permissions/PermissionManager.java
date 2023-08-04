@@ -36,8 +36,8 @@ public class PermissionManager {
     }
 
     @NotNull
-    public void getPermission(String name) {
-        permissions.getOrDefault(name, new Permission(""));
+    public Permission getPermission(String name) {
+        return permissions.getOrDefault(name, new Permission(""));
     }
 
 }

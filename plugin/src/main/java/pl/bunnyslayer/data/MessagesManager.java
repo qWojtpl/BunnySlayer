@@ -16,7 +16,14 @@ public class MessagesManager {
 
     @NotNull
     public String getMessage(String key) {
-        return messages.getOrDefault(key, key);
+        return messages.getOrDefault(key, key)
+                .replace("%prefix%", getPrefix()
+                .replace("&", "§"));
+    }
+
+    @NotNull
+    public String getPrefix() {
+        return messages.getOrDefault("prefix", "%prefix%");
     }
 
     public void clearMessages() {
