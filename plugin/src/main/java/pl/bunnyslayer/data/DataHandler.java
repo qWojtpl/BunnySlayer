@@ -41,6 +41,7 @@ public class DataHandler {
     public void loadConfig() {
         musicManager.clearSchemas();
         arenasManager.clearArenas();
+        arenasManager.getRewards().clear();
         permissionManager.clearPermissions();
         YamlConfiguration yml = YamlConfiguration.loadConfiguration(getConfigFile());
         pluginEnabled = yml.getBoolean("config.enabled");
@@ -52,6 +53,12 @@ public class DataHandler {
         if(permissionSection != null) {
             for(String permissionKey : permissionSection.getKeys(false)) {
                 permissionManager.addPermission(permissionKey, yml.getString("permissions." + permissionKey));
+            }
+        }
+        ConfigurationSection rewardSection = yml.getConfigurationSection("rewards");
+        if(rewardSection != null) {
+            for(String rewardKey : rewardSection.getKeys(false)) {
+                arenasManager.getRewards().put(rewardKey, ItemLoader.getItemStackList(yml, "rewards." + rewardKey));
             }
         }
         ConfigurationSection arenaSection = yml.getConfigurationSection("arenas");
@@ -86,6 +93,7 @@ public class DataHandler {
     public void loadData() {
         data = null;
         data = YamlConfiguration.loadConfiguration(getDataFile());
+        arenasManager.getPlayerRewards().clear();
         ConfigurationSection pointsSection = data.getConfigurationSection("points");
         if(pointsSection != null) {
             for(String player : pointsSection.getKeys(false)) {

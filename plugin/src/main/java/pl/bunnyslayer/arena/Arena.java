@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.boosters.CustomBooster;
@@ -13,6 +14,7 @@ import pl.bunnyslayer.bunnies.CustomBunny;
 import pl.bunnyslayer.bunnies.LivingBunny;
 import pl.bunnyslayer.music.MusicPlayer;
 import pl.bunnyslayer.util.LocationUtil;
+import pl.bunnyslayer.util.PlayerUtil;
 import pl.bunnyslayer.util.RandomNumber;
 
 import javax.annotation.Nullable;
@@ -129,8 +131,26 @@ public class Arena {
         plugin.getServer().getScheduler().cancelTask(boosterTask);
         killAllBunnies();
         removeAllBoosters();
+        double max = 0;
+        String maxPlayer = "";
         for(String player : currentPoints.keySet()) {
+            if(currentPoints.get(player) > max) {
+                max = currentPoints.get(player);
+                maxPlayer = player;
+            }
             arenasManager.addPoints(player, currentPoints.get(player));
+            Player p = PlayerUtil.getPlayer(player);
+            if(p != null) {
+                p.sendMessage("§aYou've got " + currentPoints.get(player) + " points on this event.");
+            }
+        }
+        if(!maxPlayer.equals("")) {
+            arenasManager.assignReward(maxPlayer, "default");
+            plugin.getServer().broadcastMessage("§a" + maxPlayer + " win the event on arena " + name + " (" + max + ") points");
+            Player p = PlayerUtil.getPlayer(maxPlayer);
+            if(p != null) {
+                p.sendMessage("§aYou have new assigned reward for winning a event!");
+            }
         }
         currentPoints.clear();
         if(musicPlayer != null) {

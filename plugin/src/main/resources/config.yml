@@ -20,9 +20,32 @@ permissions:
   arenaInfo: bs.info
   nextEvent: bs.event
 
+#
+# top_0 - reward for having the highest amount of points gained in events during all week on a payout day
+# top_1 - ^, but for second place
+# top_2 - ^^, but for third place
+# default - reward for having the highest amount of points gained in a single event. This reward is assigned every event!
+#
 rewards:
   "top_0":
-    0: {}
+    0:
+      material: DIAMOND
+      amount: 3
+    1:
+      material: EMERALD
+      amount: 3
+  "top_1":
+    0:
+      material: DIAMOND
+      amount: 3
+  "top_2":
+    0:
+      material: GOLD_INGOT
+      amount: 6
+  "default":
+    0:
+      material: EMERALD
+      amount: 1
 
 arenas:
   "default":

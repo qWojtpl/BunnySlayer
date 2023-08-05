@@ -114,7 +114,7 @@ public class ArenasManager {
             }
             if(!maxPlayer.equals("")) {
                 exclude.add(maxPlayer);
-                assignReward(maxPlayer, "top" + i);
+                assignReward(maxPlayer, "top_" + i);
             }
         }
     }
@@ -138,6 +138,9 @@ public class ArenasManager {
 
     public void startTask() {
         plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+            if(!dataHandler.isPluginEnabled()) {
+                return;
+            }
             String currentHour = DateManager.getFormatHour() + ":" + DateManager.getFormatMinute();
             for(Arena arena : arenas) {
                 for(String hour : arena.getStartHours()) {
@@ -149,7 +152,7 @@ public class ArenasManager {
             String currentDate = DateManager.getFormattedDate("%Y/%M/%D");
             if(DateManager.getDayName().equals(dataHandler.getPayday()) && !clearDates.contains(currentDate)) {
                 addClearDate(currentDate);
-                plugin.getLogger().info("Cleared leaderboard! Assigned top rewards...");
+                plugin.getLogger().info("Cleared leaderboard! Assigning top rewards...");
                 assignTopRewards();
                 clearPoints();
             }
