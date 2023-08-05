@@ -20,6 +20,10 @@ permissions:
   arenaInfo: bs.info
   nextEvent: bs.event
 
+rewards:
+  "top_0":
+    0: {}
+
 arenas:
   "default":
     duration: 5 # in minutes
@@ -36,12 +40,12 @@ arenas:
     bunnies:
       0:
         type: NORMAL
-        speed: 1.3
+        speed: 1
         percentage: 90
         exp: 1
       1:
         type: KILLER
-        speed: 2.3
+        speed: 2
         percentage: 10
         launchForce: 10
         exp: 2
@@ -49,7 +53,7 @@ arenas:
       0:
         name: "&e&lSpeed booster"
         percentage: 100
-        item: CYAN_WOOL
+        item: LIGHT_BLUE_WOOL
         effects:
           - "SPEED 3 10"
 

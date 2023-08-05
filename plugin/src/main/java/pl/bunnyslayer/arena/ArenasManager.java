@@ -24,8 +24,8 @@ public class ArenasManager {
 
     private final BunnySlayer plugin = BunnySlayer.getInstance();
     private DataHandler dataHandler;
+    private List<String> clearDates = new ArrayList<>();
     private final List<Arena> arenas = new ArrayList<>();
-    private final List<String> clearDates = new ArrayList<>();
     private final HashMap<String, Double> weekPoints = new HashMap<>();
     private final HashMap<String, List<ItemStack>> rewards = new HashMap<>();
     private final HashMap<String, List<ItemStack>> playerRewards = new HashMap<>();
@@ -80,6 +80,11 @@ public class ArenasManager {
     public void addPoints(String player, double points) {
         weekPoints.put(player, weekPoints.getOrDefault(player, 0.0) + points);
         dataHandler.savePoints(player, weekPoints.get(player));
+    }
+
+    public void addClearDate(String date) {
+        clearDates.add(date);
+        dataHandler.saveClearDate(date);
     }
 
     public void clearArenas() {
@@ -141,7 +146,10 @@ public class ArenasManager {
                     }
                 }
             }
-            if(DateManager.getDayName().equals(dataHandler.getPayday()) && !clearDates.contains(DateManager.getFormattedDate("%Y/%M/%D"))) {
+            String currentDate = DateManager.getFormattedDate("%Y/%M/%D");
+            if(DateManager.getDayName().equals(dataHandler.getPayday()) && !clearDates.contains(currentDate)) {
+                addClearDate(currentDate);
+                plugin.getLogger().info("Cleared leaderboard! Assigned top rewards...");
                 assignTopRewards();
                 clearPoints();
             }

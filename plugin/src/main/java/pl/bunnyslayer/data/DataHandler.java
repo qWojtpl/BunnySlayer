@@ -18,6 +18,7 @@ import pl.bunnyslayer.util.LocationUtil;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Getter
 public class DataHandler {
@@ -91,6 +92,13 @@ public class DataHandler {
                 arenasManager.getWeekPoints().put(player, data.getDouble("points." + player));
             }
         }
+        ConfigurationSection rewardSection = data.getConfigurationSection("rewards");
+        if(rewardSection != null) {
+            for(String player : rewardSection.getKeys(false)) {
+                arenasManager.getPlayerRewards().put(player, ItemLoader.getItemStackList(data, "rewards." + player));
+            }
+        }
+        arenasManager.setClearDates(data.getStringList("clearDates"));
     }
 
     public void loadArena(YamlConfiguration yml, String arenaName) {
@@ -163,6 +171,12 @@ public class DataHandler {
 
     public void savePlayerRewards(String player) {
         ItemLoader.parseList(data, "rewards." + player, arenasManager.getPlayerRewards(player));
+    }
+
+    public void saveClearDate(String date) {
+        List<String> dates = data.getStringList("clearDates");
+        dates.add(date);
+        data.set("clearDates", dates);
     }
 
     public File getConfigFile() {
