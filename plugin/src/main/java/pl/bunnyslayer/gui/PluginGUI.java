@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.arena.ArenasManager;
+import pl.bunnyslayer.data.MessagesManager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +23,7 @@ public abstract class PluginGUI {
 
     private final BunnySlayer plugin;
     private final ArenasManager arenasManager;
+    private final MessagesManager messagesManager;
     private final Player owner;
     private final String inventoryName;
     private final int inventorySize;
@@ -35,6 +37,7 @@ public abstract class PluginGUI {
         this.plugin = BunnySlayer.getInstance();
         plugin.getGuiManager().registerInventory(this);
         this.arenasManager = plugin.getArenasManager();
+        this.messagesManager = plugin.getMessagesManager();
         this.owner = owner;
         this.inventoryName = inventoryName;
         this.inventorySize = inventorySize;

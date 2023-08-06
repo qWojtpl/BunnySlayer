@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import pl.bunnyslayer.gui.PluginGUI;
 
 import java.util.ArrayList;
@@ -78,18 +79,33 @@ public class RewardGUI extends PluginGUI {
             setSlot(i, Material.WHITE_STAINED_GLASS_PANE, " ", getLore(" "));
             availableSlots.add(i);
         }
-        setSlot(46, Material.ARROW, "Previous page", getLore("Go to previous page"));
-        setSlot(49, Material.CHEST, "Claim all rewards", getLore("Click to claim all rewards"));
-        setSlot(52, Material.ARROW, "Next page", getLore("Go to next page"));
+        setSlot(46, Material.ARROW, getMessagesManager().getMessage("previousPage"),
+                getLore(getMessagesManager().getMessage("previousPageLore")));
+        setSlot(49, Material.CHEST, getMessagesManager().getMessage("claimAllRewards"),
+                getLore(getMessagesManager().getMessage("claimAllRewardsLore")));
+        setSlot(52, Material.ARROW, getMessagesManager().getMessage("nextPage"),
+                getLore(getMessagesManager().getMessage("nextPageLore")));
         int i = 0;
         int j = 0;
         for(ItemStack is : rewards) {
+            is = is.clone();
             if(j < currentOffset) {
                 j++;
                 continue;
             }
             if(i > availableSlots.size() - 1) {
                 break;
+            }
+            ItemMeta im = is.getItemMeta();
+            if(im != null) {
+                List<String> lore = im.getLore();
+                if(lore == null) {
+                    lore = new ArrayList<>();
+                }
+                lore.add(" ");
+                lore.add(getMessagesManager().getMessage("clickToReceive"));
+                im.setLore(lore);
+                is.setItemMeta(im);
             }
             setSlot(availableSlots.get(i), is);
             rewardSlots.add(availableSlots.get(i));

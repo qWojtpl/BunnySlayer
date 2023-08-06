@@ -96,7 +96,7 @@ public class Events implements Listener {
         if(!event.getRightClicked().getName().equals(plugin.getDataHandler().getNpcName().replace("&", "§"))) {
             return;
         }
-        new RewardGUI(event.getPlayer(), "Rewards");
+        new RewardGUI(event.getPlayer(), plugin.getMessagesManager().getMessage("rewardMenuTitle"));
     }
 
     @EventHandler
