@@ -134,6 +134,18 @@ public class ArenasManager {
         if(p == null) {
             return;
         }
+        List<ItemStack> r = getPlayerRewards(player);
+        if(rewardIndex > r.size() - 1) {
+            return;
+        }
+        ItemStack is = r.get(rewardIndex);
+        HashMap<Integer, ItemStack> rest = p.getInventory().addItem(is);
+        for(int key : rest.keySet()) {
+            p.getWorld().dropItem(p.getLocation(), rest.get(key));
+        }
+        r.remove(rewardIndex);
+        playerRewards.put(player, r);
+        dataHandler.savePlayerRewards(player);
     }
 
     public void startTask() {

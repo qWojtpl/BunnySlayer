@@ -12,13 +12,16 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.arena.Arena;
 import pl.bunnyslayer.arena.ArenasManager;
 import pl.bunnyslayer.bunnies.LivingBunny;
 import pl.bunnyslayer.gui.GUIManager;
 import pl.bunnyslayer.gui.PluginGUI;
+import pl.bunnyslayer.gui.list.RewardGUI;
 import pl.bunnyslayer.util.PlayerUtil;
 
 public class Events implements Listener {
@@ -83,6 +86,17 @@ public class Events implements Listener {
         }
         event.setCancelled(true);
         event.getEntity().setVelocity(new Vector(0, bunny.getLaunchForce(), 0));
+    }
+
+    @EventHandler
+    public void onNPCClick(PlayerInteractAtEntityEvent event) {
+        if(!event.getRightClicked().hasMetadata("NPC")) {
+            return;
+        }
+        if(!event.getRightClicked().getName().equals(plugin.getDataHandler().getNpcName().replace("&", "§"))) {
+            return;
+        }
+        new RewardGUI(event.getPlayer(), "Rewards");
     }
 
     @EventHandler

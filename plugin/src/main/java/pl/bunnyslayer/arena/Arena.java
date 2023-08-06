@@ -141,12 +141,12 @@ public class Arena {
             arenasManager.addPoints(player, currentPoints.get(player));
             Player p = PlayerUtil.getPlayer(player);
             if(p != null) {
-                p.sendMessage("§aYou've got " + currentPoints.get(player) + " points on this event.");
+                p.sendMessage("§aYou've got " + currentPoints.get(player) + " points in this event.");
             }
         }
         if(!maxPlayer.equals("")) {
             arenasManager.assignReward(maxPlayer, "default");
-            plugin.getServer().broadcastMessage("§a" + maxPlayer + " win the event on arena " + name + " (" + max + ") points");
+            plugin.getServer().broadcastMessage("§a" + maxPlayer + " win the event on arena " + name + " with (" + max + ") points");
             Player p = PlayerUtil.getPlayer(maxPlayer);
             if(p != null) {
                 p.sendMessage("§aYou have new assigned reward for winning a event!");

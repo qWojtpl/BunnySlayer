@@ -30,6 +30,7 @@ public class DataHandler {
     private final MessagesManager messagesManager = plugin.getMessagesManager();
     private boolean pluginEnabled;
     private String payday;
+    private String npcName;
     private YamlConfiguration data;
 
     public void loadAll() {
@@ -49,6 +50,7 @@ public class DataHandler {
             return;
         }
         payday = yml.getString("config.payday", "SUNDAY").toUpperCase();
+        npcName = yml.getString("config.npcName", "BunnySlayer Reward NPC");
         ConfigurationSection permissionSection = yml.getConfigurationSection("permissions");
         if(permissionSection != null) {
             for(String permissionKey : permissionSection.getKeys(false)) {
