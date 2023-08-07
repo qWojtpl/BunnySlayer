@@ -23,6 +23,8 @@ import pl.bunnyslayer.gui.PluginGUI;
 import pl.bunnyslayer.gui.list.RewardGUI;
 import pl.bunnyslayer.util.PlayerUtil;
 
+import java.text.MessageFormat;
+
 public class Events implements Listener {
 
     private final BunnySlayer plugin = BunnySlayer.getInstance();
@@ -63,8 +65,10 @@ public class Events implements Listener {
         arena.getLivingBunnies().remove(bunny);
         event.getEntity().remove();
         arena.spawnBunny(arena.getRandomCustomBunny());
-        PlayerUtil.sendActionBarMessage((Player) event.getDamager(), "Your points are now "
-                + arena.getPlayerCurrentPoints(event.getDamager().getName()));
+        PlayerUtil.sendActionBarMessage((Player) event.getDamager(),
+                MessageFormat.format(plugin.getMessagesManager().getMessage("pointsNotify"),
+                    bunny.getExperience(),
+                    arena.getPlayerCurrentPoints(event.getDamager().getName())));
     }
 
     @EventHandler
@@ -93,6 +97,10 @@ public class Events implements Listener {
             return;
         }
         if(!event.getRightClicked().getName().equals(plugin.getDataHandler().getNpcName().replace("&", "§"))) {
+            return;
+        }
+        if(!event.getPlayer().hasPermission(plugin.getPermissionManager().getPermission("seeRewards"))) {
+            event.getPlayer().sendMessage(plugin.getMessagesManager().getMessage("noPermission"));
             return;
         }
         new RewardGUI(event.getPlayer(), plugin.getMessagesManager().getMessage("rewardMenuTitle"));

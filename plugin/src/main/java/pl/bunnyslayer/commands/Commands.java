@@ -74,7 +74,7 @@ public class Commands implements CommandExecutor {
             anyAccess = true;
             helpStr += "§6/§2bs §aevent §6- §2Shows information about event start hours\n";
         }
-        if(hasPermission(sender, "rewardsCommand")) {
+        if(hasPermission(sender, "seeRewards")) {
             if(!anyAccess && (sender instanceof Player)) {
                 showRewards(sender);
                 return;
@@ -225,6 +225,9 @@ public class Commands implements CommandExecutor {
     }
 
     public void showRewards(CommandSender sender) {
+        if(!checkPermission(sender, "seeRewards")) {
+            return;
+        }
         if(!(sender instanceof Player)) {
             sender.sendMessage(messages.getMessage("mustBePlayer"));
             return;

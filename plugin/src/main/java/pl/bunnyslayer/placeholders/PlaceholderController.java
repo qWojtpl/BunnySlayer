@@ -10,6 +10,7 @@ import pl.bunnyslayer.arena.ArenasManager;
 import pl.bunnyslayer.data.DataHandler;
 import pl.bunnyslayer.data.MessagesManager;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,6 +54,9 @@ public class PlaceholderController extends PlaceholderExpansion {
             } catch(NumberFormatException ignored) {
                 return "&cINVALID NUMBER";
             }
+        } else if(params.equalsIgnoreCase("playerpoints")) {
+            return MessageFormat.format(messagesManager.getMessage("myPointsPattern"),
+                    arenasManager.getPlayerWeekPoints(player.getName()));
         }
         return null;
     }
@@ -66,6 +70,7 @@ public class PlaceholderController extends PlaceholderExpansion {
     }
 
     public void updateLeaderboard() {
+        leaderboard.clear();
         List<String> exclude = new ArrayList<>();
         for(int i = 0; i < dataHandler.getLeaderboardMaxRecords(); i++) {
             String maxPlayer = "";
@@ -80,7 +85,8 @@ public class PlaceholderController extends PlaceholderExpansion {
                 }
             }
             if(!maxPlayer.equals("")) {
-                leaderboard.put(i, (i + 1) + ". " + maxPlayer + ": " + max);
+                leaderboard.put(i, MessageFormat.format(messagesManager.getMessage("leaderboardPattern"),
+                        i + 1, maxPlayer, max));
                 exclude.add(maxPlayer);
             }
         }

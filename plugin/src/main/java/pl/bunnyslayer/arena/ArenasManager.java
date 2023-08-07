@@ -69,6 +69,10 @@ public class ArenasManager {
         return playerRewards.getOrDefault(player, new ArrayList<>());
     }
 
+    public double getPlayerWeekPoints(String player) {
+        return weekPoints.getOrDefault(player, 0.0);
+    }
+
     public void addArena(Arena arena) {
         if(getByName(arena.getName()) != null) {
             plugin.getLogger().severe("Cannot add arena: " + arena.getName() + " - found duplicated name!");
@@ -78,8 +82,8 @@ public class ArenasManager {
     }
 
     public void addPoints(String player, double points) {
-        weekPoints.put(player, weekPoints.getOrDefault(player, 0.0) + points);
-        dataHandler.savePoints(player, weekPoints.get(player));
+        weekPoints.put(player, getPlayerWeekPoints(player) + points);
+        dataHandler.savePoints(player, getPlayerWeekPoints(player));
     }
 
     public void addClearDate(String date) {

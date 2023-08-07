@@ -57,7 +57,7 @@ public class DataHandler {
         leaderboardUpdateInterval = yml.getInt("config.leaderboardUpdateInterval", 60);
         if(plugin.isUsingPlaceholderAPI()) {
             plugin.getPlaceholderController().setDataHandler(this);
-            if(plugin.getPlaceholderController().canRegister()) {
+            if(!plugin.getPlaceholderController().isRegistered()) {
                 plugin.getPlaceholderController().register();
             }
             plugin.getPlaceholderController().registerTask();

@@ -12,12 +12,14 @@ import pl.bunnyslayer.boosters.CustomBooster;
 import pl.bunnyslayer.boosters.LivingBooster;
 import pl.bunnyslayer.bunnies.CustomBunny;
 import pl.bunnyslayer.bunnies.LivingBunny;
+import pl.bunnyslayer.data.MessagesManager;
 import pl.bunnyslayer.music.MusicPlayer;
 import pl.bunnyslayer.util.LocationUtil;
 import pl.bunnyslayer.util.PlayerUtil;
 import pl.bunnyslayer.util.RandomNumber;
 
 import javax.annotation.Nullable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +30,7 @@ public class Arena {
 
     private final BunnySlayer plugin = BunnySlayer.getInstance();
     private final ArenasManager arenasManager = plugin.getArenasManager();
+    private final MessagesManager messagesManager = plugin.getMessagesManager();
     private final String name;
     private double duration;
     private double boosterInterval;
@@ -98,6 +101,7 @@ public class Arena {
                 }
             }
         }
+        plugin.getServer().broadcastMessage(MessageFormat.format(messagesManager.getMessage("eventAnnounce"), name));
     }
 
     public void spawnBunny(CustomBunny bunny) {
@@ -141,15 +145,17 @@ public class Arena {
             arenasManager.addPoints(player, currentPoints.get(player));
             Player p = PlayerUtil.getPlayer(player);
             if(p != null) {
-                p.sendMessage("§aYou've got " + currentPoints.get(player) + " points in this event.");
+                p.sendMessage(MessageFormat.format(messagesManager.getMessage("eventMyPoints"),
+                        currentPoints.get(player), arenasManager.getPlayerWeekPoints(player)));
             }
         }
         if(!maxPlayer.equals("")) {
             arenasManager.assignReward(maxPlayer, "default");
-            plugin.getServer().broadcastMessage("§a" + maxPlayer + " win the event on arena " + name + " with (" + max + ") points");
+            plugin.getServer().broadcastMessage(MessageFormat.format(messagesManager.getMessage("eventEnd"),
+                    maxPlayer, name, max));
             Player p = PlayerUtil.getPlayer(maxPlayer);
             if(p != null) {
-                p.sendMessage("§aYou have new assigned reward for winning a event!");
+                p.sendMessage(messagesManager.getMessage("newAssignedReward"));
             }
         }
         currentPoints.clear();

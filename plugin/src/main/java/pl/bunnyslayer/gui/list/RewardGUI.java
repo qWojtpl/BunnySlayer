@@ -27,9 +27,16 @@ public class RewardGUI extends PluginGUI {
     }
 
     @Override
+    public void onClose() {
+
+    }
+
+    @Override
     public void onClick(int slot) {
         if(slot == 46) {
             previousPage();
+        } else if(slot == 49) {
+            claimAllRewards();
         } else if(slot == 52) {
             nextPage();
         } else if(rewardSlots.contains(slot)) {
@@ -46,6 +53,14 @@ public class RewardGUI extends PluginGUI {
         }
         currentOffset -= 28;
         getOwner().playSound(getOwner(), Sound.ENTITY_RABBIT_JUMP, 10.0F, 0.5F);
+        updateRewards();
+    }
+
+    private void claimAllRewards() {
+        while(getArenasManager().getPlayerRewards(getOwner().getName()).size() > 0) {
+            getArenasManager().receiveReward(getOwner().getName(), 0);
+        }
+        getOwner().playSound(getOwner(), Sound.ENTITY_RABBIT_DEATH, 10.0F, 3.5F);
         updateRewards();
     }
 
