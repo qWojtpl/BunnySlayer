@@ -14,7 +14,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.arena.Arena;
 import pl.bunnyslayer.arena.ArenasManager;

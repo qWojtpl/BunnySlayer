@@ -7,6 +7,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.bunnyslayer.BunnySlayer;
 import pl.bunnyslayer.arena.Arena;
@@ -14,6 +15,8 @@ import pl.bunnyslayer.arena.ArenasManager;
 import pl.bunnyslayer.boosters.CustomBooster;
 import pl.bunnyslayer.bunnies.CustomBunny;
 import pl.bunnyslayer.data.MessagesManager;
+import pl.bunnyslayer.gui.PluginGUI;
+import pl.bunnyslayer.gui.list.RewardGUI;
 import pl.bunnyslayer.permissions.PermissionManager;
 
 @SuppressWarnings("deprecation")
@@ -39,6 +42,8 @@ public class Commands implements CommandExecutor {
                 getArenaInfo(sender, args);
             } else if(args[0].equalsIgnoreCase("event")) {
                 getNextEventInfo(sender);
+            } else if(args[0].equalsIgnoreCase("rewards")) {
+                showRewards(sender);
             }
         } else {
             showHelpPage(sender);
@@ -47,32 +52,43 @@ public class Commands implements CommandExecutor {
     }
 
     public void showHelpPage(CommandSender sender) {
-        sender.sendMessage("§6========= §2BunnySlayer §6=========");
-        sender.sendMessage(" ");
+        String helpStr = "";
         boolean anyAccess = false;
         if(hasPermission(sender, "reload")) {
             anyAccess = true;
-            sender.sendMessage("§6/§2bs §areload §6- §2Reloads configuration");
+            helpStr += "§6/§2bs §areload §6- §2Reloads configuration\n";
         }
         if(hasPermission(sender, "startArena")) {
             anyAccess = true;
-            sender.sendMessage("§6/§2bs §astart §6<§aarena§6> §6- §2Starts arena");
+            helpStr += "§6/§2bs §astart §6<§aarena§6> §6- §2Starts arena\n";
         }
         if(hasPermission(sender, "stopArena")) {
             anyAccess = true;
-            sender.sendMessage("§6/§2bs §astop §6<§aarena§6> §6- §2Stops arena");
+            helpStr += "§6/§2bs §astop §6<§aarena§6> §6- §2Stops arena\n";
         }
         if(hasPermission(sender, "arenaInfo")) {
             anyAccess = true;
-            sender.sendMessage("§6/§2bs §ainfo §6<§aarena§6> §6- §2Gets information about arena");
+            helpStr += "§6/§2bs §ainfo §6<§aarena§6> §6- §2Gets information about arena\n";
         }
         if(hasPermission(sender, "nextEvent")) {
             anyAccess = true;
-            sender.sendMessage("§6/§2bs §aevent §6- §2Shows information about event start hours");
+            helpStr += "§6/§2bs §aevent §6- §2Shows information about event start hours\n";
+        }
+        if(hasPermission(sender, "rewardsCommand")) {
+            if(!anyAccess && (sender instanceof Player)) {
+                showRewards(sender);
+                return;
+            } else {
+                helpStr += "§6/§2bs §arewards §6- §2Shows rewards GUI\n";
+            }
+            anyAccess = true;
         }
         if(!anyAccess) {
-            sender.sendMessage(messages.getMessage("noAccess"));
+            helpStr += messages.getMessage("noAccess");
         }
+        sender.sendMessage("§6========= §2BunnySlayer §6=========");
+        sender.sendMessage(" ");
+        sender.sendMessage(helpStr);
         sender.sendMessage(" ");
         sender.sendMessage("§6========= §2BunnySlayer §6=========");
     }
@@ -206,6 +222,14 @@ public class Commands implements CommandExecutor {
             return;
         }
 
+    }
+
+    public void showRewards(CommandSender sender) {
+        if(!(sender instanceof Player)) {
+            sender.sendMessage(messages.getMessage("mustBePlayer"));
+            return;
+        }
+        new RewardGUI((Player) sender, messages.getMessage("rewardMenuTitle"));
     }
 
     public boolean checkPermission(CommandSender sender, String permissionKey) {

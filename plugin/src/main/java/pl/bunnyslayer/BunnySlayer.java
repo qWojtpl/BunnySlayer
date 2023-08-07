@@ -13,6 +13,7 @@ import pl.bunnyslayer.events.Events;
 import pl.bunnyslayer.gui.GUIManager;
 import pl.bunnyslayer.music.MusicManager;
 import pl.bunnyslayer.permissions.PermissionManager;
+import pl.bunnyslayer.placeholders.PlaceholderController;
 
 @Getter
 public final class BunnySlayer extends JavaPlugin {
@@ -25,6 +26,7 @@ public final class BunnySlayer extends JavaPlugin {
     private Commands commands;
     private CommandHelper commandHelper;
     private DataHandler dataHandler;
+    private PlaceholderController placeholderController;
     private GUIManager guiManager;
     private Events events;
 
@@ -38,6 +40,10 @@ public final class BunnySlayer extends JavaPlugin {
         this.commands = new Commands();
         this.commandHelper = new CommandHelper();
         this.dataHandler = new DataHandler();
+        if(getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            getLogger().info("Found PAPI!");
+            this.placeholderController = new PlaceholderController();
+        }
         this.guiManager = new GUIManager();
         this.events = new Events();
         PluginCommand command = getCommand("bunnyslayer");
@@ -64,6 +70,10 @@ public final class BunnySlayer extends JavaPlugin {
 
     public static BunnySlayer getInstance() {
         return main;
+    }
+
+    public boolean isUsingPlaceholderAPI() {
+        return placeholderController != null;
     }
 
 }

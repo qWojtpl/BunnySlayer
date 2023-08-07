@@ -12,6 +12,7 @@
 config:
 
   # When set to true date and hour check is enabled and config is loaded into memory.
+  # When disabled, plugin is still loading data and messages into memory.
   enabled: true
 
   # Day when leaderboard is cleared and reward for best players is assigned.
@@ -20,12 +21,19 @@ config:
   # Since plugin doesn't depend on Citizens API, you have to use colors in NPC name field to proper working.
   npcName: "BunnySlayer Reward NPC"
 
+  # Define how many records will be loaded into leaderboard
+  leaderboardMaxRecords: 10
+
+  # Define interval between leaderboard updates
+  leaderboardUpdateInterval: 60
+
 permissions:
   reload: bs.reload
   startArena: bs.start
   stopArena: bs.stop
   arenaInfo: bs.info
   nextEvent: bs.event
+  rewardsCommand: bs.rewards
 
 #
 # top_0 - reward for having the highest amount of points gained in events during all week on a payout day

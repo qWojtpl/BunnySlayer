@@ -17,3 +17,4 @@ messages:
   claimAllRewards: "&2&lClaim all rewards"
   claimAllRewardsLore: "&aClick to claim all rewards!"
   clickToReceive: "&a&lCLICK TO RECEIVE REWARD"
+  mustBePlayer: "%prefix%&cYou must be a player!"

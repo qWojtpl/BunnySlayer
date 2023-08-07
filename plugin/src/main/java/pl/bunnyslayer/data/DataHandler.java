@@ -31,6 +31,8 @@ public class DataHandler {
     private boolean pluginEnabled;
     private String payday;
     private String npcName;
+    private int leaderboardMaxRecords;
+    private int leaderboardUpdateInterval;
     private YamlConfiguration data;
 
     public void loadAll() {
@@ -51,6 +53,15 @@ public class DataHandler {
         }
         payday = yml.getString("config.payday", "SUNDAY").toUpperCase();
         npcName = yml.getString("config.npcName", "BunnySlayer Reward NPC");
+        leaderboardMaxRecords = yml.getInt("config.leaderboardMaxRecords", 10);
+        leaderboardUpdateInterval = yml.getInt("config.leaderboardUpdateInterval", 60);
+        if(plugin.isUsingPlaceholderAPI()) {
+            plugin.getPlaceholderController().setDataHandler(this);
+            if(plugin.getPlaceholderController().canRegister()) {
+                plugin.getPlaceholderController().register();
+            }
+            plugin.getPlaceholderController().registerTask();
+        }
         ConfigurationSection permissionSection = yml.getConfigurationSection("permissions");
         if(permissionSection != null) {
             for(String permissionKey : permissionSection.getKeys(false)) {

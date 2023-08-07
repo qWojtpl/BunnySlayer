@@ -4,6 +4,8 @@ main: pl.bunnyslayer.BunnySlayer
 api-version: 1.19
 authors: [Assasin98980]
 description: Add bunny slayer event to your Minecraft server.
+softdepend:
+  - PlaceholderAPI
 commands:
   bunnyslayer:
     description: Use BunnySlayer plugin.

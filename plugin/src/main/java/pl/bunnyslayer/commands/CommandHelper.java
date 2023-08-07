@@ -38,6 +38,9 @@ public class CommandHelper implements TabCompleter {
             if(hasPermission(sender, "nextEvent")) {
                 completions.add("event");
             }
+            if(hasPermission(sender, "rewardsCommands")) {
+                completions.add("rewards");
+            }
         } else if(args.length == 2) {
             if(
                 (args[0].equalsIgnoreCase("start") && hasPermission(sender, "startArena")) ||
