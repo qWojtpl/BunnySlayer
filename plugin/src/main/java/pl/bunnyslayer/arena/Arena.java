@@ -101,7 +101,8 @@ public class Arena {
                 }
             }
         }
-        plugin.getServer().broadcastMessage(MessageFormat.format(messagesManager.getMessage("eventAnnounce"), name));
+        plugin.getServer().broadcastMessage(MessageFormat.format(
+                messagesManager.getMessage("eventAnnounce"), name.replace("_", " ")));
     }
 
     public void spawnBunny(CustomBunny bunny) {
@@ -151,8 +152,9 @@ public class Arena {
         }
         if(!maxPlayer.equals("")) {
             arenasManager.assignReward(maxPlayer, "default");
-            plugin.getServer().broadcastMessage(MessageFormat.format(messagesManager.getMessage("eventEnd"),
-                    maxPlayer, name, max));
+            plugin.getServer().broadcastMessage(MessageFormat.format(
+                    messagesManager.getMessage("eventEnd"),
+                        maxPlayer, name.replace("_", " "), max));
             Player p = PlayerUtil.getPlayer(maxPlayer);
             if(p != null) {
                 p.sendMessage(messagesManager.getMessage("newAssignedReward"));

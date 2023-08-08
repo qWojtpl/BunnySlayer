@@ -44,6 +44,8 @@ public class Commands implements CommandExecutor {
                 getNextEventInfo(sender);
             } else if(args[0].equalsIgnoreCase("rewards")) {
                 showRewards(sender);
+            } else {
+                showHelpPage(sender);
             }
         } else {
             showHelpPage(sender);
@@ -221,7 +223,17 @@ public class Commands implements CommandExecutor {
         if(!checkPermission(sender, "nextEvent")) {
             return;
         }
-
+        sender.sendMessage("§6========= §2BunnySlayer §6=========");
+        sender.sendMessage(" ");
+        for(Arena arena : arenasManager.getArenas()) {
+            String color = "§7";
+            if(arena.isStarted()) {
+                color = "§a";
+            }
+            sender.sendMessage(color + arena.getName() + " §e- §6" + String.join("§e, §6", arena.getStartHours()));
+        }
+        sender.sendMessage(" ");
+        sender.sendMessage("§6========= §2BunnySlayer §6=========");
     }
 
     public void showRewards(CommandSender sender) {

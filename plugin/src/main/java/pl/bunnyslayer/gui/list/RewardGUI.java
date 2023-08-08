@@ -27,11 +27,6 @@ public class RewardGUI extends PluginGUI {
     }
 
     @Override
-    public void onClose() {
-
-    }
-
-    @Override
     public void onClick(int slot) {
         if(slot == 46) {
             previousPage();
