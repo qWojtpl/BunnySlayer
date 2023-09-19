@@ -211,7 +211,7 @@ public class Commands implements CommandExecutor {
         if(i > 1) {
             sender.spigot().sendMessage(components);
         }
-        locComponent = new TextComponent("§aBooster spawn locations: §6" + arena.getSpawnLocations().size());
+        locComponent = new TextComponent("§aBooster spawn locations: §6" + arena.getBoosterSpawnLocations().size());
         locComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                 new ComponentBuilder("§7" + String.join("§6,\n§7", arena.getBoosterSpawnLocationsString())).create()));
         sender.spigot().sendMessage(locComponent);
