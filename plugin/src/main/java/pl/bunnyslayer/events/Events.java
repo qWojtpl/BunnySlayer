@@ -7,6 +7,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Rabbit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -31,8 +32,27 @@ public class Events implements Listener {
     private final ArenasManager arenasManager = plugin.getArenasManager();
     private final GUIManager guiManager = plugin.getGuiManager();
 
-    @EventHandler
-    public void onBunnyDamage(EntityDamageByEntityEvent event) {
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBunnyDamage(EntityDamageEvent event) {
+        if(event.isCancelled()) {
+            return;
+        }
+        if(!(event.getEntity() instanceof Rabbit)) {
+            return;
+        }
+        Arena arena = arenasManager.getByBunny(event.getEntity());
+        if(arena == null) {
+            return;
+        }
+        LivingBunny bunny = arena.getLivingBunny((LivingEntity) event.getEntity());
+        if(bunny == null) {
+            return;
+        }
+        event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.LOW)
+    public void onBunnyByPlayerDamage(EntityDamageByEntityEvent event) {
         if(!(event.getEntity() instanceof Rabbit)) {
             return;
         }
